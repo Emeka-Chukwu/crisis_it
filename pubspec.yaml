@@ -1,0 +1,66 @@
+name: create_it
+description: An emergency application that highlights state of events.
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons:
+    ^1.0.2
+    # file_picker: ^2.1.5
+  # file_picker: ^1.3.1
+  file_picker: ^3.0.1
+  path: ^1.7.0
+  permissions_plugin: ^1.1.4
+  # flick_video_player: ^0.2.0
+  video_player: ^2.1.0
+  path_provider: ^2.0.1
+  # camera: ^0.8.1
+  images_picker: ^1.0.0
+  flutter_riverpod: ^0.13.1+1
+  record: ^2.1.0+1
+  light_compressor: ^1.0.1
+  flutter_image_compress: ^1.0.0
+  # just_audio: ^0.7.2
+  # flutter_sound: ^8.0.0+6
+  audioplayers: ^0.18.3
+  # video_compress: ^3.0.0 #to be deleted soon
+  cloud_firestore: ^1.0.3
+  firebase_auth: ^1.0.2
+  firebase_storage: ^8.0.2
+  firebase_core: ^1.0.2
+  geolocator: ^7.0.1
+  geocoding: ^2.0.0
+  intl: ^0.17.0
+  video_thumbnail: ^0.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    # - images/a_dot_ham.jpeg
+
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
