@@ -1,3 +1,4 @@
+import 'package:create_it/src/screens/history/history.dart';
 import 'package:create_it/src/screens/menu/home.dart';
 import 'package:create_it/src/screens/videos/video_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,9 @@ class VideoNavigation extends StatelessWidget {
             builder: (BuildContext context) {
               switch (settings.name) {
                 case "/":
-                  return VideoUpload();
+                  return History();
                 default:
-                  return VideoUpload();
+                  return History();
               }
             });
       },

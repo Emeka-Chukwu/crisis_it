@@ -1,20 +1,19 @@
-import 'package:create_it/src/dashboard/menu_navigation.dart';
+import 'package:create_it/src/dashboard/video_nav.dart';
 import 'package:create_it/src/screens/audio/audio_screen.dart';
-import 'package:create_it/src/screens/images/image_screen.dart';
+import 'package:create_it/src/screens/call/call.dart';
 import 'package:create_it/src/screens/menu/home.dart';
-import 'package:create_it/src/screens/videos/video_screen.dart';
 import 'package:flutter/material.dart';
 
 Widget buildBody(itemBuild) {
   switch (itemBuild) {
     case 0:
-      return MenuHomeNavigation();
+      return MenuHome();
     // break;
     case 1:
-      return VideoUpload();
+      return VideoNavigation();
     // break;
     case 2:
-      return ImageUpload();
+      return DialCallScreen();
     // break;
     case 3:
       return AudioUpload();

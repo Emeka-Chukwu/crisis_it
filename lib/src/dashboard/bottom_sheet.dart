@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 BottomNavigationBar buildBottomNavigationBar(
     BottomSheetProvider provider, BuildContext context) {
   return BottomNavigationBar(
-    selectedItemColor: AppColor.bBlue,
-    unselectedItemColor: Colors.blueGrey,
+    selectedItemColor: AppColor.green,
+    unselectedItemColor: Colors.grey,
     showUnselectedLabels: true,
     currentIndex: provider.index,
     type: BottomNavigationBarType.fixed,
@@ -22,9 +22,9 @@ BottomNavigationBar buildBottomNavigationBar(
         case 2:
           provider.changeTheBottomsheet(index);
           break;
-        case 3:
-          provider.changeTheBottomsheet(index);
-          break;
+        // case 3:
+        //   provider.changeTheBottomsheet(index);
+        //   break;
         // case 4:
         //   provider.changeTheBottomsheet(index);
         //   break;
@@ -34,9 +34,10 @@ BottomNavigationBar buildBottomNavigationBar(
     items: [
       BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
       BottomNavigationBarItem(
-          label: 'Video', icon: Icon(Icons.video_collection_sharp)),
-      BottomNavigationBarItem(label: 'Image', icon: Icon(Icons.image)),
-      BottomNavigationBarItem(label: 'Audio', icon: Icon(Icons.audiotrack)),
+          label: 'History', icon: Icon(Icons.history_edu_sharp)),
+      BottomNavigationBarItem(
+          label: 'Contacts', icon: Icon(Icons.contact_phone)),
+      // BottomNavigationBarItem(label: 'Audio', icon: Icon(Icons.audiotrack)),
     ],
   );
 }
