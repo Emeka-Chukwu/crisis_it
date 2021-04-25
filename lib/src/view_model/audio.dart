@@ -6,6 +6,7 @@ import 'package:create_it/src/cores/cores.dart';
 import 'package:create_it/src/dashboard/main_screens.dart';
 import 'package:create_it/src/model/crisis_it.dart';
 import 'package:create_it/src/model/user.dart';
+import 'package:create_it/src/screens/menu/upload_form.dart';
 import 'package:create_it/src/services/uploads.dart';
 import 'package:create_it/src/widgets/progress_bar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -61,7 +62,8 @@ class AudioProvider extends ChangeNotifier {
   }
 
   void stopRecordAudio() async {
-    bool isRecording = await Record.isRecording();
+    isRecording = await Record.isRecording();
+
     timer?.cancel();
     recordDuration = 0;
     print("kkkkkkkkkkkkkkkkkkkkkk");
@@ -96,7 +98,7 @@ class AudioProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> _pause() async {
+  Future<void> pause() async {
     timer?.cancel();
     await Record.pause();
 
@@ -104,7 +106,7 @@ class AudioProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _resume() async {
+  Future<void> resume() async {
     _startTimer();
     await Record.resume();
 
@@ -113,6 +115,7 @@ class AudioProvider extends ChangeNotifier {
   }
 
   void playTheAudio() async {
+    print("playAudio");
     isRecorder = false;
     isPlaying = true;
     notifyListeners();
@@ -147,6 +150,7 @@ class AudioProvider extends ChangeNotifier {
         if (s == AudioPlayerState.COMPLETED) {
           timer?.cancel();
           recordDuration = 0;
+          notifyListeners();
         }
       });
     }
@@ -164,13 +168,18 @@ class AudioProvider extends ChangeNotifier {
   }
 
   void stopTheAudio() {
+    print("stopAudio");
+
     if (filePath != "") {
       audioPlayer.stop();
       isPlaying = false;
+      print(isPlaying);
       timer?.cancel();
       recordDuration = 0;
+      notifyListeners();
+    } else {
+      print("filePath");
     }
-    notifyListeners();
   }
 
   void pauseTheAudio() async {
@@ -201,13 +210,19 @@ class AudioProvider extends ChangeNotifier {
     }
   }
 
-  void uploadAudioToServer(BuildContext context, UserModel user,
-      [String title = ""]) async {
+  void uploadAudioToServer(
+    BuildContext context,
+    UserModel user,
+    String title,
+    String details,
+    String incidentType,
+  ) async {
     if (filePath != "") {
-      AlertDialogClass.progressBarUpload(context,
-          title: "Audio uploading",
-          description: "Please wait ",
-          color: AppColor.darkBlue);
+      AlertDialogClass.newDialogLoading(
+        context,
+        title: "Uploading Audio ...",
+        description: "We’re getting your request done. \nKindly wait a bit. ",
+      );
 
       CrisisItModel crisisItModel = CrisisItModel(
         id: "",
@@ -220,15 +235,17 @@ class AudioProvider extends ChangeNotifier {
         userId: user.id,
         time: DateTime.now().microsecondsSinceEpoch,
         mediaType: MediaType.AUDIO,
+        details: details,
+        incidentType: incidentType,
       );
       await uploadHelper.submitCrisisData(
-          filePath, "audios", crisisItModel, context);
+          filePath, "audios", crisisItModel, context, user);
       Navigator.pop(context);
       changeScreen(context, MainScreenDashBoard());
     }
   }
 
-  void pickAudio() async {
+  void pickAudio(BuildContext context) async {
     notifyListeners();
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.audio);
@@ -238,6 +255,12 @@ class AudioProvider extends ChangeNotifier {
       print(result.files.single.path);
       filePath = result.files.single.path!;
       file = File(filePath);
+      changeScreenWithoutRoot(
+          context,
+          UploadFormMenu(
+            index: 3,
+            filePath: filePath,
+          ));
       // CrisisItModel crisisItModel = CrisisItModel(
       //   id: "",
       //   name: user.name,

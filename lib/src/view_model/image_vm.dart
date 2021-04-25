@@ -5,6 +5,7 @@ import 'package:create_it/src/cores/cores.dart';
 import 'package:create_it/src/dashboard/main_screens.dart';
 import 'package:create_it/src/model/crisis_it.dart';
 import 'package:create_it/src/model/user.dart';
+import 'package:create_it/src/screens/menu/upload_form.dart';
 import 'package:create_it/src/services/uploads.dart';
 import 'package:create_it/src/widgets/progress_bar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -26,8 +27,8 @@ class ImagesProvider extends ChangeNotifier {
   //  final _timerKey = GlobalKey<VideoTimerState>();
   //
 
-  Future<File> compressAndGetFile(
-      String imagePath, CrisisItModel crisis, BuildContext context) async {
+  Future<File> compressAndGetFile(String imagePath, CrisisItModel crisis,
+      BuildContext context, UserModel user) async {
     final directory = await getExternalStorageDirectory();
     Directory extDir = await getApplicationDocumentsDirectory();
 
@@ -46,7 +47,7 @@ class ImagesProvider extends ChangeNotifier {
     );
     if (result != null) {
       await uploadHelper.submitCrisisData(
-          result.path, "images", crisis, context, 1);
+          result.path, "images", crisis, context, user, 1);
     }
     print(file.lengthSync());
     print(result!.lengthSync());
@@ -54,7 +55,8 @@ class ImagesProvider extends ChangeNotifier {
     return result;
   }
 
-  void pickImages(UserModel user, [String title = ""]) async {
+  void pickImages(UserModel user, BuildContext context,
+      [String title = ""]) async {
     isFromGallery = true;
     notifyListeners();
     FilePickerResult? result =
@@ -65,6 +67,12 @@ class ImagesProvider extends ChangeNotifier {
       print(result.files.single.path);
       filePath = result.files.single.path!;
       file = File(filePath);
+      changeScreenWithoutRoot(
+          context,
+          UploadFormMenu(
+            index: 1,
+            filePath: filePath,
+          ));
       // CrisisItModel crisisItModel = CrisisItModel(
       //   id: "",
       //   name: user.name,
@@ -88,7 +96,8 @@ class ImagesProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  void recordAnImage(UserModel user, [String title = ""]) async {
+  void recordAnImage(UserModel user, BuildContext context,
+      [String title = ""]) async {
     // CrisisItModel crisisItModel = CrisisItModel(
     //   id: "",
     //   name: user.name,
@@ -117,17 +126,25 @@ class ImagesProvider extends ChangeNotifier {
     String pathV = imagePath[0].path ?? "";
     if (pathV != "") {
       file = File(pathV);
+      changeScreenWithoutRoot(
+          context,
+          UploadFormMenu(
+            index: 1,
+            filePath: filePath,
+          ));
       // compressAndGetFile(pathV, crisisItModel);
       filePath = pathV;
     }
     notifyListeners();
   }
 
-  void sendFileToFirebase(BuildContext context, UserModel user, String title) {
-    AlertDialogClass.progressBarUpload(context,
-        title: "Image uploading",
-        description: "Please wait ",
-        color: AppColor.darkBlue);
+  void sendFileToFirebase(BuildContext context, UserModel user, String title,
+      String details, String incidentType) {
+    AlertDialogClass.newDialogLoading(
+      context,
+      title: "Uploading Image ...",
+      description: "We’re getting your request done. \nKindly wait a bit. ",
+    );
 
     CrisisItModel crisisItModel = CrisisItModel(
       id: "",
@@ -140,9 +157,11 @@ class ImagesProvider extends ChangeNotifier {
       userId: user.id,
       mediaType: MediaType.IMAGE,
       time: DateTime.now().microsecondsSinceEpoch,
+      details: details,
+      incidentType: incidentType,
     );
 
-    compressAndGetFile(file.path, crisisItModel, context);
+    compressAndGetFile(file.path, crisisItModel, context, user);
     // Navigator.pop(context);
     // changeScreen(context, MainScreenDashBoard());
   }

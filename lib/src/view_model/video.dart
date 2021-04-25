@@ -8,6 +8,7 @@ import 'package:create_it/src/cores/colors.dart';
 import 'package:create_it/src/dashboard/main_screens.dart';
 import 'package:create_it/src/model/crisis_it.dart';
 import 'package:create_it/src/model/user.dart';
+import 'package:create_it/src/screens/menu/upload_form.dart';
 import 'package:create_it/src/services/uploads.dart';
 import 'package:create_it/src/widgets/progress_bar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -34,6 +35,7 @@ class VideoProvider extends ChangeNotifier {
   int minutes = 0;
   int seconds = 0;
   int recordDuration = 0;
+  int totalDuration = 30;
   // late List<CameraDescription> cameras;
 
   late VideoPlayerController videoController;
@@ -45,8 +47,8 @@ class VideoProvider extends ChangeNotifier {
   //  final _timerKey = GlobalKey<VideoTimerState>();
   //
   //
-  void compressTheVideoWhenUploading(
-      String pathvideo, CrisisItModel crisis, BuildContext context) async {
+  void compressTheVideoWhenUploading(String pathvideo, CrisisItModel crisis,
+      BuildContext context, UserModel userModel) async {
     // final info = await VideoCompress.getMediaInfo(pathvideo);
     final directory = await getExternalStorageDirectory();
     Directory extDir = await getApplicationDocumentsDirectory();
@@ -79,7 +81,8 @@ class VideoProvider extends ChangeNotifier {
 // );
 
       // use the
-      uploadHelper.submitCrisisData(outputFile, "video", crisis, context);
+      uploadHelper.submitCrisisData(
+          outputFile, "video", crisis, context, userModel);
 
       print(outputFile);
       print(
@@ -104,7 +107,8 @@ class VideoProvider extends ChangeNotifier {
     // notifyListeners();
   }
 
-  void pickVideos(UserModel user, [String title = ""]) async {
+  void pickVideos(UserModel user, BuildContext context,
+      [String title = ""]) async {
     isFromGallery = true;
     notifyListeners();
     FilePickerResult? result =
@@ -115,6 +119,12 @@ class VideoProvider extends ChangeNotifier {
       print(
           "payyyyyyyyyyyyyyyyyyyyyyyyyyyyyythhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhtttttttttttttttttttttttttttttttt");
       videoStringPAth = result.files.single.path!;
+      changeScreenWithoutRoot(
+          context,
+          UploadFormMenu(
+            index: 2,
+            filePath: videoStringPAth,
+          ));
 
       file = File(result.files.single.path!);
       videoController = VideoPlayerController.file(file)
@@ -128,6 +138,12 @@ class VideoProvider extends ChangeNotifier {
     }
     notifyListeners();
     // compressTheVideoWhenUploading();
+  }
+
+  void stopLocalFile() {
+    if (videoController.value.isPlaying) {
+      videoController.pause();
+    }
   }
 
   void playRemoteVideos(String videoPath, String id) async {
@@ -152,7 +168,25 @@ class VideoProvider extends ChangeNotifier {
     // videoController.play();
 
     remoteController.play().then((value) {
+      if (remoteController.value.position.inSeconds > 0) {}
       _startTimer();
+      print(totalDuration);
+      print(remoteController.value.duration.inSeconds);
+    });
+
+// remoteController.position.d
+    remoteController.addListener(() {
+      if (remoteController.value.duration.inSeconds == 1) {
+        _startTimer();
+
+        totalDuration = remoteController.value.duration.inSeconds;
+        recordDuration = 0;
+      }
+
+      if (remoteController.value.duration.inSeconds == recordDuration) {
+        timer?.cancel();
+        recordDuration = 0;
+      }
     });
     videoId = id;
     isPlaying = true;
@@ -171,6 +205,19 @@ class VideoProvider extends ChangeNotifier {
     timer?.cancel();
     timer = Timer.periodic(tick, (Timer t) {
       if (remoteController.value.isPlaying) {
+        recordDuration++;
+      }
+      formaRecordingTime();
+
+      notifyListeners();
+    });
+  }
+
+  void _startTimerLocal() {
+    const tick = const Duration(seconds: 1);
+    timer?.cancel();
+    timer = Timer.periodic(tick, (Timer t) {
+      if (videoController.value.isPlaying) {
         recordDuration++;
       }
       formaRecordingTime();
@@ -200,11 +247,18 @@ class VideoProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  uploadVideoToFirebase(context, UserModel user, [String title = ""]) {
-    AlertDialogClass.progressBarUpload(context,
-        title: "Video uploading",
-        description: "Please wait ",
-        color: AppColor.darkBlue);
+  uploadVideoToFirebase(
+    context,
+    UserModel user,
+    String title,
+    String details,
+    String incidentType,
+  ) {
+    AlertDialogClass.newDialogLoading(
+      context,
+      title: "Uploading video ...",
+      description: "We’re getting your request done. \nKindly wait a bit. ",
+    );
     CrisisItModel crisisItModel = CrisisItModel(
       id: "",
       name: user.name,
@@ -216,9 +270,12 @@ class VideoProvider extends ChangeNotifier {
       userId: user.id,
       mediaType: MediaType.VIDEO,
       time: DateTime.now().microsecondsSinceEpoch,
+      details: details,
+      incidentType: incidentType,
     );
 
-    compressTheVideoWhenUploading(videoStringPAth, crisisItModel, context);
+    compressTheVideoWhenUploading(
+        videoStringPAth, crisisItModel, context, user);
   }
 
   // void initializeTheCamera() async {
@@ -304,7 +361,8 @@ class VideoProvider extends ChangeNotifier {
   //   }
   // }
 
-  Future recordAVideo(UserModel user, [String title = ""]) async {
+  Future recordAVideo(UserModel user, BuildContext context,
+      [String title = ""]) async {
     final videoPath = await ImagesPicker.openCamera(
         pickType: PickType.video,
         maxTime: 15,
@@ -322,6 +380,12 @@ class VideoProvider extends ChangeNotifier {
     if (pathV != "") {
       // compressTheVideoWhenUploading();
       videoStringPAth = pathV;
+      changeScreenWithoutRoot(
+          context,
+          UploadFormMenu(
+            index: 2,
+            filePath: videoStringPAth,
+          ));
       print(
           "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
       // CrisisItModel crisisItModel = CrisisItModel(
@@ -348,12 +412,53 @@ class VideoProvider extends ChangeNotifier {
         ..initialize().then((value) => value);
       videoController.setLooping(false);
       videoController.setVolume(20);
-      videoController.play();
+      // videoController.play();
       isPickVideo = true;
     } else {
       // User canceled the picker
     }
     notifyListeners();
     return videoPath[0].path;
+  }
+
+  void restart() {
+    if (videoStringPAth != "") {
+      recordDuration = 0;
+
+      videoController = VideoPlayerController.file(file)
+        ..initialize().then((value) {
+          _startTimerLocal();
+        });
+      videoController.setLooping(false);
+      videoController.setVolume(20);
+      videoController.play();
+      // isPickVideo = true;
+    }
+  }
+
+  void playVideoLocal() {
+    if (videoStringPAth != "") {
+      videoController.play().then((value) {
+        _startTimerLocal();
+        isPlaying = true;
+        isPaused = false;
+        notifyListeners();
+      });
+
+      videoController.addListener(() {
+        if (videoController.value.duration.inSeconds < recordDuration)
+          timer?.cancel();
+      });
+    }
+  }
+
+  void pauseVideoLocal() {
+    if (videoStringPAth != "") {
+      videoController.pause();
+      timer?.cancel();
+      isPlaying = false;
+      isPaused = true;
+      notifyListeners();
+    }
   }
 }
