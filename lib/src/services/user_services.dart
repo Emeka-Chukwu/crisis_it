@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 // import 'package:foodApp/utils/utils.dart';
 
 class UserServices {
@@ -15,6 +16,7 @@ class UserServices {
   //     FirebaseStorage.instance.ref().child("users");
   FirebaseFirestore firestorestance = FirebaseFirestore.instance;
   final FirebaseAuth userAuth = FirebaseAuth.instance;
+  // User? firebaseUser;
   // final Reference storageReference =
   //     FirebaseStorage.instance.ref().child("users");
 
@@ -28,6 +30,44 @@ class UserServices {
     user = FirebaseAuth.instance.currentUser;
     print(user!.email);
     print("herererre");
+    if (!user!.emailVerified) {
+      var actionCodeSettings = ActionCodeSettings(
+          url: 'https://www.example.com/?email=${user!.email}',
+          dynamicLinkDomain: "example.page.link",
+          androidInstallApp: true,
+          androidPackageName: "io.devcareer.create_it",
+          androidMinimumVersion: "12",
+          // android: {
+          //   "packageName": "com.example.android",
+          //   "installApp": true,
+          //   "minimumVersion": "12"
+          // },
+          iOSBundleId: "com.example.ios",
+          handleCodeInApp: true);
+
+      await user!.sendEmailVerification(actionCodeSettings);
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+//Get actionCode from the dynamicLink
+      final PendingDynamicLinkData data =
+          (await FirebaseDynamicLinks.instance.getInitialLink())!;
+      final Uri deepLink = data.link;
+      var actionCode = deepLink.queryParameters['oobCode'];
+
+      try {
+        await auth.checkActionCode(actionCode!);
+        await auth.applyActionCode(actionCode);
+
+        // If successful, reload the user:
+        auth.currentUser!.reload();
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'invalid-action-code') {
+          print('The code is invalid.');
+        }
+      }
+      // await user!.sendEmailVerification();
+      throw ("please verify your email to continue");
+    }
     // print(user.uid.toString());
     final usersdoc = await firestorestance
         .collection("users")
@@ -49,9 +89,14 @@ class UserServices {
                 email: user.email, password: user.password))
         .user;
 
+    try {
+      await firebaseUser!.sendEmailVerification();
+    } catch (e) {
+      throw (e.toString());
+    }
     await firestorestance
         .collection("users")
-        .doc(firebaseUser!.uid.toString())
+        .doc(firebaseUser.uid.toString())
         .set(user.toJson())
         .then((value) {
       print("jjj");
@@ -68,14 +113,21 @@ class UserServices {
       firebaseUser = (await FirebaseAuth.instance
               .signInWithEmailAndPassword(email: email, password: password))
           .user;
+      if (!firebaseUser!.emailVerified) {
+        //disable automatic sending of email verification link
+        // firebaseUser.sendEmailVerification();
+        throw ("Please verify your email");
+      }
     } on PlatformException catch (e) {
       // print(e.message);
       print(e.toString());
       return throw PlatformException(code: e.message!);
     } on FirebaseAuthException catch (e) {
       return throw FirebaseAuthException(message: e.message, code: '788');
+    } catch (e) {
+      throw (e);
     }
-    print(firebaseUser!.uid.toString() + "eeeeeeeeee");
+    // print(firebaseUser!.uid.toString() + "eeeeeeeeee");
     DocumentSnapshot docs = await firestorestance
         .collection("users")
         .doc(firebaseUser.uid.toString())
@@ -96,6 +148,15 @@ class UserServices {
   Future logoutUserAccount() async {
     FirebaseAuth user = FirebaseAuth.instance;
     user.signOut();
+  }
+
+  Future forgetPaasword(String email) async {
+    FirebaseAuth user = FirebaseAuth.instance;
+    try {
+      user.sendPasswordResetEmail(email: email);
+    } catch (err) {
+      throw (err);
+    }
   }
 
   Future submitDashBoardImage(File file) async {
@@ -144,5 +205,17 @@ class UserServices {
     Placemark place = placemarks[0];
     String userLocation = "${place.locality}, ${place.country}";
     return userLocation;
+  }
+
+  Future handleDynamicLinksSplash() async {
+    final PendingDynamicLinkData? data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+    // _handleDeepLink(data);
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+      // _handleDeepLink(dynamicLink);
+    }, onError: (OnLinkErrorException e) async {
+      print('Link Failed: ${e.message}');
+    });
   }
 }

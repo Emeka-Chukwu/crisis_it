@@ -4,12 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:create_it/src/cores/cores.dart';
 import 'package:create_it/src/dashboard/main_screens.dart';
 import 'package:create_it/src/model/crisis_it.dart';
+import 'package:create_it/src/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+
+import 'send_mail.dart';
 
 class UploadHelper {
   final FirebaseAuth user = FirebaseAuth.instance;
@@ -18,7 +21,7 @@ class UploadHelper {
   FirebaseFirestore firestorestance = FirebaseFirestore.instance;
 
   Future submitCrisisData(String mediaPath, String dirName,
-      CrisisItModel crisis, BuildContext context,
+      CrisisItModel crisis, BuildContext context, UserModel userModel,
       [int index = 0]) async {
     int endcharactersIndex = mediaPath.lastIndexOf(".");
     String endCharacters = mediaPath.substring(endcharactersIndex);
@@ -58,7 +61,13 @@ class UploadHelper {
         .then((value) => print(value));
 
     Navigator.pop(context);
-    changeScreen(context, MainScreenDashBoard());
+    // SendEmailToAdmin.sendTheEmail(crisis, userModel);
+    SendEmailToAdmin sendTo = SendEmailToAdmin();
+    var value = await sendTo.sendTheEmail(crisis, userModel);
+    print(value);
+    print("value");
+    print(value);
+    changeScreenWithRemove(context, MainScreenDashBoard());
   }
 }
 
