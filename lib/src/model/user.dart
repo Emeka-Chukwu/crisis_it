@@ -6,6 +6,7 @@ class UserModel {
   String email;
   String password;
   String imageUrl;
+  String gender;
 
   UserModel({
     required this.id,
@@ -13,11 +14,13 @@ class UserModel {
     required this.email,
     required this.password,
     required this.imageUrl,
+    this.gender = "Male",
   });
 
   factory UserModel.fromJson(DocumentSnapshot snapshot) => UserModel(
         id: snapshot.id.toString(),
         name: snapshot.data()!["name"],
+        gender: snapshot.data()!["gender"] ?? "Male",
         email: snapshot.data()!["email"] ?? null,
         password: snapshot.data()!["password"] ?? null,
         imageUrl: snapshot.data()!["imageUrl"] ??
@@ -28,6 +31,7 @@ class UserModel {
         "name": this.name,
         "email": this.email,
         "imageUrl": this.imageUrl,
-        "password": this.password
+        "password": this.password,
+        "gender": this.gender,
       };
 }
