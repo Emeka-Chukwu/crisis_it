@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "115788433266",
-    "project_id": "crisis-it-840b2",
-    "storage_bucket": "crisis-it-840b2.appspot.com"
+    "project_number": "628069220231",
+    "project_id": "crisisit-645c6",
+    "storage_bucket": "crisisit-645c6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115788433266:android:31ecf2d72024cc5ffb3feb",
+        "mobilesdk_app_id": "1:628069220231:android:0a3e1c98977efe34599d22",
         "android_client_info": {
-          "package_name": "com.example.create_it"
+          "package_name": "io.devcareer.create_it"
         }
       },
       "oauth_client": [
         {
-          "client_id": "115788433266-diq4k9egfilmsuukhfftq94e4lp4008h.apps.googleusercontent.com",
+          "client_id": "628069220231-uebin7dkrkcaj7m0r345ih5k0gcd4456.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC-UqzCIxJEp4clUyWYfJx47U4zCQMFjwg"
+          "current_key": "AIzaSyBXzYcO557zu4iOPbop_fxjYGiwRdT4NjQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "115788433266-diq4k9egfilmsuukhfftq94e4lp4008h.apps.googleusercontent.com",
+              "client_id": "628069220231-uebin7dkrkcaj7m0r345ih5k0gcd4456.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
