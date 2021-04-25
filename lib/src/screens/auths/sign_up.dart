@@ -23,7 +23,30 @@ class SignUpScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    YMargin(Responsive.screenHeight(25, context)),
+                    YMargin(Responsive.screenHeight(3, context)),
+                    Image(
+                      image: AssetImage("logo_main".png),
+                      width: Responsive.screenWidth(30, context),
+                    ),
+                    YMargin(Responsive.screenHeight(10, context)),
+                    Row(
+                      children: [
+                        Text("Sign Up",
+                            style: TextStyle(
+                              color: AppColor.darkGreen,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w500,
+                              height: 1.5,
+                            )),
+                        Text("!",
+                            style: TextStyle(
+                              color: AppColor.green,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w500,
+                              height: 1.5,
+                            ))
+                      ],
+                    ),
                     AuthsForm(
                       formkey: formkey,
                       isLogin: false,

@@ -9,8 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'dialog.dart';
 
-final audioProvider =
-    ChangeNotifierProvider<AudioProvider>((ref) => AudioProvider());
 void audioBottomSheet(BuildContext context, TextEditingController controller) {
   showModalBottomSheet(
       // shape: ShapeBorder(),
@@ -112,7 +110,7 @@ class _VideoUploadSheetState extends State<VideoUploadSheet> {
               GestureDetector(
                 onTap: () => selectTypeOfAudioUpload(
                   context,
-                  () => audio.pickAudio(),
+                  () => audio.pickAudio(context),
                   () => audio.recordAudio(),
                 ),
                 child: Container(
@@ -246,14 +244,14 @@ class _VideoUploadSheetState extends State<VideoUploadSheet> {
                       boxColor: AppColor.darkBlue,
                       onTap: () {
                         // audio.playTheAudio();
-                        if (audio.isRecording) {
-                          audio.stopRecordAudio();
-                        }
-                        if (widget.controller.text.isEmpty) {
-                          return;
-                        }
-                        audio.uploadAudioToServer(
-                            context, user.userModel, widget.controller.text);
+                        // if (audio.isRecording) {
+                        //   audio.stopRecordAudio();
+                        // }
+                        // if (widget.controller.text.isEmpty) {
+                        //   return;
+                        // }
+                        // audio.uploadAudioToServer(
+                        //     context, user.userModel, widget.controller.text);
                       }),
                 ],
               ),

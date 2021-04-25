@@ -10,8 +10,6 @@ import 'package:video_player/video_player.dart';
 
 import 'dailog.dart';
 
-final videoProvider =
-    ChangeNotifierProvider<VideoProvider>((ref) => VideoProvider());
 void videoBottomSheet(BuildContext context, TextEditingController controller) {
   showModalBottomSheet(
       // shape: ShapeBorder(),
@@ -106,8 +104,10 @@ class VideoUploadSheet extends StatelessWidget {
               GestureDetector(
                 onTap: () => selectTypeOfUpload(
                   context,
-                  () => video.pickVideos(user.userModel, controller.text),
-                  () => video.recordAVideo(user.userModel, controller.text),
+                  () => video.pickVideos(
+                      user.userModel, context, controller.text),
+                  () => video.recordAVideo(
+                      user.userModel, context, controller.text),
                 ),
                 child: Container(
                   alignment: Alignment.center,
@@ -153,10 +153,10 @@ class VideoUploadSheet extends StatelessWidget {
                     textColor: AppColor.white,
                     boxColor: AppColor.darkBlue,
                     onTap: () {
-                      if (video.videoStringPAth != "") {
-                        video.uploadVideoToFirebase(
-                            context, user.userModel, controller.text);
-                      }
+                      // if (video.videoStringPAth != "") {
+                      //   video.uploadVideoToFirebase(
+                      //       context, user.userModel, controller.text);
+                      // }
                     },
                   ),
                 ],

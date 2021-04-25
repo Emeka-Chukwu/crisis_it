@@ -9,12 +9,13 @@ class LoginRegisterText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          loginScreen ? "Don't have an account" : "Already have an account",
+          loginScreen ? "Don't have an account" : "Already have an account?",
           style: TextStyle(
-            color: AppColor.black,
+            color: AppColor.darkGreen,
+            fontSize: 16,
           ),
         ),
         XMargin(
@@ -28,8 +29,9 @@ class LoginRegisterText extends StatelessWidget {
             child: Text(
               loginScreen ? "sign up" : "login",
               style: TextStyle(
-                color: AppColor.darkBlue,
-                decoration: TextDecoration.underline,
+                color: AppColor.darkGreen,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
               ),
             ))
       ],

@@ -3,37 +3,60 @@ import 'package:create_it/src/cores/cores.dart';
 import 'package:create_it/src/services/user_services.dart';
 import 'package:create_it/src/view_model/user.dart';
 import 'package:create_it/src/view_model/user_riverpod_initialization.dart';
+import 'package:create_it/src/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        GestureDetector(
-          onTap: null,
-          child: Icon(
-            Icons.location_on_outlined,
-            color: AppColor.blue,
+    return Container(
+      width: Responsive.screenWidth(100, context),
+      height: 90,
+      decoration: BoxDecoration(
+        color: Color(0xffF2F0E7),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          XMargin(10),
+          Icon(
+            Icons.location_on,
+            size: 35,
+            color: AppColor.darkGreen,
           ),
-        ),
-        XMargin(5),
-
-        Consumer(builder: (context, watch, child) {
-          final user = watch(userProvider);
-          // user.getUserLocation();
-          return Expanded(child: Text("${user.place}"));
-        }),
-        // GestureDetector(
-        //   onTap: null,
-        //   child: Icon(
-        //     Icons.notifications_none,
-        //     color: AppColor.bBlue,
-        //   ),
-        // )
-      ],
+          XMargin(20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Current Location",
+                style: TextStyle(
+                  color: Color(0xff7F8E9D),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              YMargin(5),
+              Consumer(
+                builder: (context, watch, child) {
+                  final user = watch(userProvider);
+                  return Text(
+                    "${user.place}",
+                    style: TextStyle(
+                      color: AppColor.darkGreen,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  );
+                },
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -44,6 +67,7 @@ class HomeHeaderSecond extends StatelessWidget {
     return Consumer(
       builder: (context, watch, child) {
         final user = watch(userProvider);
+        print("user name ${user.userModel.email}");
 
         if (user.place == "") {
           user.getUserLocation();
@@ -52,16 +76,17 @@ class HomeHeaderSecond extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Hi,",
+                Text("Hello,",
                     style: TextStyle(
                       color: AppColor.grey,
                       fontSize: 18,
                       fontWeight: FontWeight.w300,
                     )),
-                XMargin(5),
-                Text("${user.email}!",
+                YMargin(5),
+                Text("${user.userModel.name}!",
                     style: TextStyle(
                       color: AppColor.grey,
                       fontSize: 18,
@@ -69,20 +94,22 @@ class HomeHeaderSecond extends StatelessWidget {
                     )),
               ],
             ),
-            // GestureDetector(
-            //     onTap: null,
-            //     child: Container(
-            //       width: 35,
-            //       height: 35,
-            //       decoration: BoxDecoration(
-            //         color: AppColor.greyBlue,
-            //         shape: BoxShape.circle,
-            //       ),
-            //       child: Icon(
-            //         Icons.notifications_none,
-            //         color: AppColor.bBlue,
-            //       ),
-            //     ))
+            GestureDetector(
+                onTap: () => AlertDialogClass.newDialogLogout(
+                      context,
+                      onTap: () => user.logoutUser(context),
+                    ),
+
+                // AlertDialogClass.newDialogLoading(
+                //       context,
+                //       title: "Loading...",
+                //       description:
+                //           "We're getting your request done. \nKindly wait a bit",
+                //     ),
+                child: Icon(
+                  Icons.logout,
+                  color: AppColor.red,
+                ))
           ],
         );
       },

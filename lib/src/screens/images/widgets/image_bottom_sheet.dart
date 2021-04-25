@@ -10,8 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'dialog.dart';
 
-final imageProvider =
-    ChangeNotifierProvider<ImagesProvider>((ref) => ImagesProvider());
 void imageBottomSheet(BuildContext context, TextEditingController controller) {
   showModalBottomSheet(
       // shape: ShapeBorder(),
@@ -102,9 +100,10 @@ class ImageUploadSheet extends StatelessWidget {
                   context,
                   () {
                     // if(user.userModel ! == null){}
-                    image.pickImages(user.userModel, controller.text);
+                    image.pickImages(user.userModel, context, controller.text);
                   },
-                  () => image.recordAnImage(user.userModel, controller.text),
+                  () => image.recordAnImage(
+                      user.userModel, context, controller.text),
                 ),
                 child: Container(
                   alignment: Alignment.center,
@@ -135,13 +134,14 @@ class ImageUploadSheet extends StatelessWidget {
                   ),
                   XMargin(10),
                   ButtonImplSecond(
-                    title: "upload ",
-                    width: 35,
-                    textColor: AppColor.white,
-                    boxColor: AppColor.darkBlue,
-                    onTap: () => image.sendFileToFirebase(
-                        context, user.userModel, controller.text),
-                  ),
+                      title: "upload ",
+                      width: 35,
+                      textColor: AppColor.white,
+                      boxColor: AppColor.darkBlue,
+                      onTap: () => null
+                      //  image.sendFileToFirebase(
+                      //     context, user.userModel, controller.text),
+                      ),
                 ],
               ),
             ],
