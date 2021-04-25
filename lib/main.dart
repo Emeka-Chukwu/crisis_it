@@ -2,7 +2,7 @@ import 'package:create_it/src/view_model/user_riverpod_initialization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'src/screens/auths/login.dart';
+import './src/cores/cores.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,18 +20,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: WidgetToShow(),
     );
   }
 }
 
+// LoginScreen()
 class WidgetToShow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.read(userProvider).userLoginState(context);
+    Future.delayed(Duration(seconds: 2), () {
+      context.read(userProvider).userLoginState(context);
+    });
     return Scaffold(
       body: Container(
-        child: Center(child: Text("Welcome to CrisisIT")),
+        child: Center(
+            child: Image(
+          image: AssetImage("logo_main".png),
+        )),
       ),
     );
   }
