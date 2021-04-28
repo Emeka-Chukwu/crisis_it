@@ -1,6 +1,7 @@
 import 'package:create_it/src/dashboard/main_screens.dart';
 import 'package:create_it/src/model/user.dart';
 import 'package:create_it/src/screens/auths/guest.dart';
+import 'package:create_it/src/screens/menu/new_hom.dart';
 import 'package:create_it/src/services/user_services.dart';
 import 'package:create_it/src/cores/change_screen.dart';
 import 'package:create_it/src/cores/colors.dart';
@@ -17,11 +18,18 @@ class UserProvider extends ChangeNotifier {
   String email = "";
   String password = "";
   String place = "";
+  String placeTwo = "";
   bool restoreLogin = true;
   bool obscureText = true;
   String gender = "Male";
   bool showConfirmEmail = false;
   bool showMessage = false;
+  int indexCategory = 0;
+
+  setIndexCategory(int index) {
+    indexCategory = index;
+    notifyListeners();
+  }
 
   void setShowMeassage() {
     showMessage = !showMessage;
@@ -150,7 +158,9 @@ class UserProvider extends ChangeNotifier {
       getUserLocation();
       print(userModel);
       print("userModel");
-      changeScreen(context, MainScreenDashBoard());
+      changeScreen(context, NewMenuHome());
+      // changeScreen(context, MainScreenDashBoard());
+
       // changeScreen(context, LoginScreen());
     } catch (err) {
       print(err.toString());
@@ -179,7 +189,7 @@ class UserProvider extends ChangeNotifier {
         print(userModel.email);
         print(userModel.name);
         // change to home screen
-        changeScreenRemove(context, MainScreenDashBoard());
+        changeScreenRemove(context, NewMenuHome());
       } catch (e) {
         // changeScreen(context, LoginScreen());
         changeScreen(context, WelcomeGuest());
@@ -194,7 +204,9 @@ class UserProvider extends ChangeNotifier {
   }
 
   getUserLocation() async {
-    place = await UserServices.getCurrentUserLocation();
+    var placeList = await UserServices.getCurrentUserLocation();
+    place = placeList[0];
+    placeTwo = placeList[1];
     notifyListeners();
   }
 

@@ -204,7 +204,9 @@ class UserServices {
         await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark place = placemarks[0];
     String userLocation = "${place.locality}, ${place.country}";
-    return userLocation;
+    String userLocationTwo =
+        "${place.street} ${place.locality} ${place.postalCode} ${place.country}";
+    return [userLocation, userLocationTwo];
   }
 
   Future handleDynamicLinksSplash() async {
