@@ -1,4 +1,5 @@
 import 'package:create_it/src/cores/cores.dart';
+import 'package:create_it/src/dashboard/main_screens.dart';
 import 'package:create_it/src/model/crisis_it.dart';
 import 'package:create_it/src/screens/audio/widget/audio_bottom_sheet.dart';
 import 'package:create_it/src/screens/history/history.dart';
@@ -27,9 +28,14 @@ class UploadFormMenu extends StatelessWidget {
         child: Consumer(
           builder: (context, watch, child) {
             final image = watch(imageProvider);
+            final dashboard = watch(dashBoardProvider);
             final user = watch(userProvider);
             final video = watch(videoProvider);
             final audio = watch(audioProvider);
+            type.text = crisis[user.indexCategory - 1];
+            titleController.text = "${type.text} incident";
+            detailsController.text =
+                "${type.text} incident reported by ${user.userModel.name} at  ${user.placeTwo}";
             return WillPopScope(
               onWillPop: () async {
                 // if (video.videoController.value.isPlaying)
@@ -68,7 +74,12 @@ class UploadFormMenu extends StatelessWidget {
                               Icons.phone_in_talk,
                               color: AppColor.darkGreen,
                             ),
-                            onTap: () => null,
+                            onTap: () {
+                              dashboard.changeTheBottomsheet(3);
+                              Navigator.pop(context);
+                              // changeScreenRemove(
+                              //     context, MainScreenDashBoard());
+                            },
                           ),
                         ],
                       ),
@@ -233,54 +244,54 @@ class UploadFormMenu extends StatelessWidget {
                           ),
                         ),
                       ),
-                      YMargin(Responsive.screenHeight(2, context)),
-                      Text(
-                        "Type of incident",
-                        style: TextStyle(
-                          color: Color(0xff0E1A26),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          height: 1.5,
-                        ),
-                      ),
+                      YMargin(Responsive.screenHeight(4, context)),
+                      // Text(
+                      //   "Type of incident",
+                      //   style: TextStyle(
+                      //     color: Color(0xff0E1A26),
+                      //     fontSize: 14,
+                      //     fontWeight: FontWeight.w600,
+                      //     height: 1.5,
+                      //   ),
+                      // ),
                       YMargin(Responsive.screenHeight(1, context)),
-                      Container(
-                        width: Responsive.screenWidth(90, context),
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: AppColor.lightGreen,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: DropdownButtonFormField(
-                          hint: Text("Select type"),
-                          items: crisis.map((String crises) {
-                            return DropdownMenuItem(
-                              value: crises,
-                              child:
-                                  // Icon(Icons.male),
-                                  Text(
-                                crises,
-                                style: TextStyle(color: AppColor.darkGreenText),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            type.text = newValue.toString();
-                            print(type.text);
-                            // user.setGender(newValue.toString());
-                            // print(newValue);
-                            //  user.setGender()
-                            // do other stuff with _category
-                            //  setState(() => _category = newValue);
-                          },
-                          // value: type.text,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: Responsive.screenWidth(3, context)),
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   width: Responsive.screenWidth(90, context),
+                      //   height: 50,
+                      //   decoration: BoxDecoration(
+                      //     color: AppColor.lightGreen,
+                      //     borderRadius: BorderRadius.circular(10),
+                      //   ),
+                      //   child: DropdownButtonFormField(
+                      //     hint: Text("Select type"),
+                      //     items: crisis.map((String crises) {
+                      //       return DropdownMenuItem(
+                      //         value: crises,
+                      //         child:
+                      //             // Icon(Icons.male),
+                      //             Text(
+                      //           crises,
+                      //           style: TextStyle(color: AppColor.darkGreenText),
+                      //         ),
+                      //       );
+                      //     }).toList(),
+                      //     onChanged: (newValue) {
+                      //       type.text = newValue.toString();
+                      //       print(type.text);
+                      //       // user.setGender(newValue.toString());
+                      //       // print(newValue);
+                      //       //  user.setGender()
+                      //       // do other stuff with _category
+                      //       //  setState(() => _category = newValue);
+                      //     },
+                      //     value: type.text,
+                      //     decoration: InputDecoration(
+                      //       border: InputBorder.none,
+                      //       contentPadding: EdgeInsets.symmetric(
+                      //           horizontal: Responsive.screenWidth(3, context)),
+                      //     ),
+                      //   ),
+                      // ),
                       YMargin(Responsive.screenHeight(2, context)),
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
