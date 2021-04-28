@@ -1,4 +1,5 @@
 import 'package:create_it/src/screens/audio/audio_screen.dart';
+import 'package:create_it/src/screens/call/call.dart';
 import 'package:create_it/src/screens/menu/home.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +15,9 @@ class AudioNavigation extends StatelessWidget {
             builder: (BuildContext context) {
               switch (settings.name) {
                 case "/":
-                  return AudioUpload();
+                  return DialCallScreen();
                 default:
-                  return AudioUpload();
+                  return DialCallScreen();
               }
             });
       },

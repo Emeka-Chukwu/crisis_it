@@ -1,3 +1,4 @@
+import 'package:create_it/src/screens/help/help_home.dart';
 import 'package:create_it/src/screens/images/image_screen.dart';
 import 'package:create_it/src/screens/menu/home.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,9 @@ class ImageNavigation extends StatelessWidget {
             builder: (BuildContext context) {
               switch (settings.name) {
                 case "/":
-                  return ImageUpload();
+                  return HelpHomeScreen();
                 default:
-                  return ImageUpload();
+                  return HelpHomeScreen();
               }
             });
       },

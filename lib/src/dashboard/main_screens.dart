@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import './items.dart';
+import 'audio_nav.dart';
+import 'image_nav.dart';
+import 'menu_navigation.dart';
 import 'video_nav.dart';
 
 final dashBoardProvider =
@@ -17,16 +20,25 @@ class MainScreenDashBoard extends StatefulWidget {
 }
 
 class _MainScreenDashBoardState extends State<MainScreenDashBoard> {
-  List<GlobalKey<NavigatorState>> _navigatorKeys = [videoNavigatorKey];
+  List<GlobalKey<NavigatorState>> _navigatorKeys = [
+    menuHomeNavigatorKey,
+    videoNavigatorKey,
+    imageNavigatorKey,
+    audioNavigatorKey,
+  ];
 
-  Future<bool> _systemBackButtonPressed() {
-    if (_navigatorKeys[0].currentState!.canPop()) {
+  Future<bool> _systemBackButtonPressed(int index) {
+    if (_navigatorKeys[index].currentState!.canPop()) {
       print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-      _navigatorKeys[0].currentState!.pop(_navigatorKeys[0].currentContext);
+      _navigatorKeys[index]
+          .currentState!
+          .pop(_navigatorKeys[index].currentContext);
     } else {
       // SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
-      AlertDialogClass.newDialogLoading(context,
-          title: "title", description: "description");
+      // AlertDialogClass.newDialogLoading(context,
+      //     title: "title", description: "description");
+      print("hhhhhjjjjjjjjjjjjjjjjjjjjjhhhhhhhhhhhhhhhhh");
+      Navigator.pop(context);
     }
     return Future.value(false);
   }
@@ -42,7 +54,7 @@ class _MainScreenDashBoardState extends State<MainScreenDashBoard> {
               if (audio.isPlaying) {
                 audio.stopTheAudioRemote();
               }
-              return _systemBackButtonPressed();
+              return _systemBackButtonPressed(dashBoard.index);
             },
             child: buildBody(dashBoard.index)),
         bottomNavigationBar: buildBottomNavigationBar(dashBoard, context),

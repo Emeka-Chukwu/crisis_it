@@ -22,21 +22,23 @@ BottomNavigationBar buildBottomNavigationBar(
         case 2:
           provider.changeTheBottomsheet(index);
           break;
-        // case 3:
-        //   provider.changeTheBottomsheet(index);
-        //   break;
+        case 3:
+          provider.changeTheBottomsheet(index);
+          break;
         // case 4:
         //   provider.changeTheBottomsheet(index);
         //   break;
-        default:
+        // default:
       }
     },
     items: [
       BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
       BottomNavigationBarItem(
           label: 'History', icon: Icon(Icons.history_edu_sharp)),
+      BottomNavigationBarItem(label: 'Info', icon: Icon(Icons.info)),
       BottomNavigationBarItem(
           label: 'Contacts', icon: Icon(Icons.contact_phone)),
+
       // BottomNavigationBarItem(label: 'Audio', icon: Icon(Icons.audiotrack)),
     ],
   );
