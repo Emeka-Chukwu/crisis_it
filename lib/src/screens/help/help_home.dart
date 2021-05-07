@@ -15,13 +15,13 @@ class HelpHomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               YMargin(
-                Responsive.screenHeight(7, context),
+                Responsive.screenHeight(10, context),
               ),
               Text(
                 "Info hub",
                 style: TextStyle(
                   color: AppColor.darkGreen,
-                  fontSize: 22,
+                  fontSize: 24,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -30,7 +30,7 @@ class HelpHomeScreen extends StatelessWidget {
                 "Learn how to handle crisis situations and use of First Aid",
                 style: TextStyle(
                   color: AppColor.greyText,
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -79,35 +79,38 @@ class HelperComponentsDivider extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () => onTap(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff535C66),
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => onTap(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff535C66),
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Color(0xffC7CAD9),
-                size: 15,
-              ),
-            ],
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xffC7CAD9),
+                  size: 15,
+                ),
+              ],
+            ),
           ),
-        ),
-        Divider(
-          thickness: 1,
-          color: Color(0xffC7CAD9),
-        ),
-      ],
+          Divider(
+            thickness: 1,
+            color: Color(0xffC7CAD9),
+          ),
+        ],
+      ),
     );
   }
 }

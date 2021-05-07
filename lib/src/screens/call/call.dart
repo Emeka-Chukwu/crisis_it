@@ -38,10 +38,32 @@ class DialCallScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text("Emergency"),
+                        child: Text("Emergency 112"),
                       ),
                       GestureDetector(
-                        onTap: () => _makePhoneCall('tel:+37256193217'),
+                        onTap: () => _makePhoneCall('tel:112'),
+                        child: Icon(
+                          Icons.call,
+                          color: AppColor.green,
+                        ),
+                      ),
+                      XMargin(20),
+                      GestureDetector(
+                        child: Icon(
+                          Icons.more_vert,
+                          color: AppColor.lightGrey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text("Emergency 119"),
+                      ),
+                      GestureDetector(
+                        onTap: () => _makePhoneCall('tel:119'),
                         child: Icon(
                           Icons.call,
                           color: AppColor.green,

@@ -14,7 +14,7 @@ class HelpScreenDetails extends StatelessWidget {
           child: Container(
             child: Column(
               children: [
-                YMargin(Responsive.screenHeight(3, context)),
+                YMargin(Responsive.screenHeight(5, context)),
                 Row(
                   children: [
                     GestureDetector(

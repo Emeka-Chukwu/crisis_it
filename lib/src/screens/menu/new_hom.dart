@@ -9,124 +9,104 @@ class NewMenuHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer(
-        builder: (context, watch, child) {
-          final user = watch(userProvider);
-          return Container(
-            child: Column(
-              children: [
-                YMargin(
-                  Responsive.screenHeight(7, context),
-                ),
-                Text(
-                  "Welcome",
-                  style: TextStyle(
-                    color: AppColor.darkGreen,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
+      body: SingleChildScrollView(
+        child: Consumer(
+          builder: (context, watch, child) {
+            final user = watch(userProvider);
+            return Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.screenWidth(5, context)),
+              child: Column(
+                children: [
+                  YMargin(
+                    Responsive.screenHeight(7, context),
                   ),
-                ),
-                YMargin(10),
-                Text(
-                  "Quickly report an event around you",
-                  style: TextStyle(
-                    color: AppColor.greyText,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                YMargin(20),
-                IndicentTypeSelector(
-                  incident: "Flood/Erosion",
-                  onTap: () => user.setIndexCategory(1),
-                  user: user,
-                  index: 1,
-                ),
-                IndicentTypeSelector(
-                  incident: "Accidents",
-                  onTap: () => user.setIndexCategory(2),
-                  user: user,
-                  index: 2,
-                ),
-                IndicentTypeSelector(
-                  incident: "Fire",
-                  onTap: () => user.setIndexCategory(3),
-                  user: user,
-                  index: 3,
-                ),
-                IndicentTypeSelector(
-                  incident: "Building collapse",
-                  onTap: () => user.setIndexCategory(4),
-                  user: user,
-                  index: 4,
-                ),
-                IndicentTypeSelector(
-                  incident: "Kidnapping",
-                  onTap: () => user.setIndexCategory(5),
-                  user: user,
-                  index: 5,
-                ),
-                IndicentTypeSelector(
-                  incident: "Thefts and Robbery",
-                  onTap: () => user.setIndexCategory(6),
-                  user: user,
-                  index: 6,
-                ),
-                IndicentTypeSelector(
-                  incident: "Others",
-                  onTap: () => user.setIndexCategory(7),
-                  user: user,
-                  index: 7,
-                ),
-                YMargin(50),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => user.indexCategory != 0
-                      ? changeScreen(context, MainScreenDashBoard())
-                      : null,
-                  child: Container(
-                    width: Responsive.screenWidth(90, context),
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: user.indexCategory != 0
-                          ? AppColor.darkGreen
-                          : AppColor.cyan,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage("megaphone2".png),
-                        ),
-                        XMargin(15),
-                        Text(
-                          "Report Incident",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: AppColor.white,
-                            fontSize: 16,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                YMargin(10),
-                GestureDetector(
-                  onTap: null,
-                  child: Text(
-                    "Skip",
+                  YMargin(15),
+                  Text(
+                    "Welcome",
                     style: TextStyle(
-                      fontSize: 16,
+                      color: AppColor.darkGreen,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  YMargin(10),
+                  Text(
+                    "Quickly report an event around you",
+                    style: TextStyle(
+                      color: AppColor.greyText,
+                      fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                  YMargin(20),
+                  Wrap(
+                    direction: Axis.horizontal,
+                    children: [
+                      IndicentTypeSelectorSec(
+                        incident: "Floods/Erosion",
+                        onTap: () {
+                          user.setIndexCategory(1);
+                          changeScreen(context, MainScreenDashBoard());
+                        },
+                        imageUrl: "assets/images/flood_.png",
+                      ),
+                      IndicentTypeSelectorSec(
+                        incident: "Accidents",
+                        onTap: () {
+                          user.setIndexCategory(2);
+                          changeScreen(context, MainScreenDashBoard());
+                        },
+                        imageUrl: "assets/images/accidents_.png",
+                      ),
+                      IndicentTypeSelectorSec(
+                        incident: "Fire",
+                        onTap: () {
+                          user.setIndexCategory(3);
+                          changeScreen(context, MainScreenDashBoard());
+                        },
+                        imageUrl: "assets/images/fire_.png",
+                      ),
+                      IndicentTypeSelectorSec(
+                        incident: "Building collapse",
+                        onTap: () {
+                          user.setIndexCategory(4);
+                          changeScreen(context, MainScreenDashBoard());
+                        },
+                        imageUrl: "assets/images/collapse_.png",
+                      ),
+                      IndicentTypeSelectorSec(
+                        incident: "Kidnapping",
+                        onTap: () {
+                          user.setIndexCategory(5);
+                          changeScreen(context, MainScreenDashBoard());
+                        },
+                        imageUrl: "assets/images/kidnapping.png",
+                      ),
+                      IndicentTypeSelectorSec(
+                        incident: "Thefts and Robbery",
+                        onTap: () {
+                          user.setIndexCategory(6);
+                          changeScreen(context, MainScreenDashBoard());
+                        },
+                        imageUrl: "assets/images/robbery.png",
+                      ),
+                      IndicentTypeSelectorSec(
+                        incident: "Others",
+                        onTap: () {
+                          user.setIndexCategory(7);
+                          changeScreen(context, MainScreenDashBoard());
+                        },
+                        imageUrl: "assets/images/crisis.png",
+                      ),
+                    ],
+                  ),
+                  YMargin(50),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -165,6 +145,51 @@ class IndicentTypeSelector extends StatelessWidget {
               color: Color(0xff133B53)),
         )
       ],
+    );
+  }
+}
+
+class IndicentTypeSelectorSec extends StatelessWidget {
+  final Function onTap;
+  final String imageUrl;
+  final String incident;
+
+  const IndicentTypeSelectorSec({
+    Key? key,
+    required this.onTap,
+    required this.imageUrl,
+    required this.incident,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Container(
+        margin: EdgeInsets.all(8),
+        width: Responsive.screenWidth(40, context),
+        height: 110,
+        child: Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(
+                image: AssetImage(imageUrl),
+                width: Responsive.screenWidth(25, context),
+                height: 50,
+              ),
+              YMargin(10),
+              Text(
+                incident,
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    height: 1.4,
+                    color: Color(0xff133B53)),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

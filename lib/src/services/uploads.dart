@@ -60,10 +60,10 @@ class UploadHelper {
         .add(crisis.toJson())
         .then((value) => print(value));
 
-    Navigator.pop(context);
     // SendEmailToAdmin.sendTheEmail(crisis, userModel);
     SendEmailToAdmin sendTo = SendEmailToAdmin();
     var value = await sendTo.sendTheEmail(crisis, userModel);
+    Navigator.pop(context);
     print(value);
     print("value");
     print(value);
@@ -71,26 +71,26 @@ class UploadHelper {
   }
 }
 
-Future<Position> _determinePosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
+// Future<Position> _determinePosition() async {
+//   bool serviceEnabled;
+//   LocationPermission permission;
 
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return Future.error('Location services are disabled.');
-  }
+//   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+//   if (!serviceEnabled) {
+//     return Future.error('Location services are disabled.');
+//   }
 
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
+//   permission = await Geolocator.checkPermission();
+//   if (permission == LocationPermission.denied) {
+//     permission = await Geolocator.requestPermission();
+//     if (permission == LocationPermission.deniedForever) {
+//       return Future.error(
+//           'Location permissions are permanently denied, we cannot request permissions.');
+//     }
 
-    if (permission == LocationPermission.denied) {
-      return Future.error('Location permissions are denied');
-    }
-  }
-  return await Geolocator.getCurrentPosition();
-}
+//     if (permission == LocationPermission.denied) {
+//       return Future.error('Location permissions are denied');
+//     }
+//   }
+//   return await Geolocator.getCurrentPosition();
+// }
